@@ -6,9 +6,9 @@ export const skillGroups = [
     label: 'Platform Engineering',
     color: 'blue',
     skills: [
-      { name: 'Infrastructure & Cloud Basics', level: 80, description: 'AWS/GCP fundamentals, VM provisioning, basic networking' },
+      { name: 'Networking & Infrastructure', level: 80, description: 'Cloud systems, VM provisioning, networking, GitHub Actions, deployment workflows' },
       { name: 'CI/CD Pipelines', level: 75, description: 'GitHub Actions, deployment workflows, environment management' },
-      { name: 'Docker & Containers', level: 82, description: 'Containerisation basics, docker-compose, service orchestration' },
+      { name: 'Docker & Containers', level: 82, description: 'Containerisation, docker-compose, service orchestration' },
     ],
   },
   {

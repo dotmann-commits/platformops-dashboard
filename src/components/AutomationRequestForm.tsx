@@ -35,10 +35,44 @@ export default function AutomationRequestForm() {
       }));
     }
 
+    function handleServiceRequest(event: Event) {
+      const customEvent = event as CustomEvent<{
+        serviceId?: string;
+        serviceTitle?: string;
+        serviceDescription?: string;
+      }>;
+
+      const serviceId = customEvent.detail?.serviceId || "";
+      const serviceTitle = customEvent.detail?.serviceTitle || "MikeOps service";
+
+      const automationType =
+        serviceId.includes("crm")
+          ? "crm"
+          : serviceId.includes("lead")
+            ? "lead"
+            : serviceId.includes("assistant")
+              ? "ai-assistant"
+              : serviceId.includes("bpa") || serviceId.includes("workflow") || serviceId.includes("task") || serviceId.includes("ticket") || serviceId.includes("reporting") || serviceId.includes("infra")
+                ? "workflow-automation"
+                : "custom";
+
+      setFormData((current) => ({
+        ...current,
+        automationType,
+        priority: current.priority || "medium",
+
+        message:
+          current.message ||
+          `I clicked Request this service for: ${serviceTitle}. Please review this service request and recommend the best next step.`,
+      }));
+    }
+
     document.addEventListener("click", handleAuditIntentClick);
+    window.addEventListener("mikeops-service-request", handleServiceRequest);
 
     return () => {
       document.removeEventListener("click", handleAuditIntentClick);
+      window.removeEventListener("mikeops-service-request", handleServiceRequest);
     };
   }, []);
 

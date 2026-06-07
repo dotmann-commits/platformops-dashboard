@@ -257,13 +257,25 @@ function getConfig(service: Service): {
 export default function ServiceModal({ service, onClose }: { service: Service | null; onClose: () => void }) {
   if (!service) return null;
 
-  const config = getConfig(service);
+  const activeService = service;
+  const config = getConfig(activeService);
 
   function goToAutomationRequest() {
+    window.dispatchEvent(
+      new CustomEvent("mikeops-service-request", {
+        detail: {
+          serviceId: activeService.id ?? "",
+          serviceTitle: activeService.title,
+          serviceDescription: activeService.description,
+        },
+      })
+    );
+
     onClose();
+
     setTimeout(() => {
-      document.querySelector("#automation-request")?.scrollIntoView({ behavior: "smooth" });
-    }, 50);
+      document.querySelector("#automation-request")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   }
 
   return (
@@ -278,9 +290,9 @@ export default function ServiceModal({ service, onClose }: { service: Service | 
 
         <p className="text-xs font-black uppercase tracking-[0.35em] text-cyan-300">MikeOps Service</p>
 
-        <h2 className="mt-3 max-w-5xl text-2xl font-black tracking-tight md:text-4xl">{service.title}</h2>
+        <h2 className="mt-3 max-w-5xl text-2xl font-black tracking-tight md:text-4xl">{activeService.title}</h2>
 
-        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300 md:text-base">{service.description}</p>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300 md:text-base">{activeService.description}</p>
 
         <div className="mt-3 flex flex-wrap gap-2">
           <span className="inline-flex items-center gap-2 rounded-lg border border-blue-400/25 bg-slate-950/60 px-4 py-2 text-sm text-slate-200">
@@ -338,7 +350,7 @@ export default function ServiceModal({ service, onClose }: { service: Service | 
 
             <div className="mt-4 flex justify-center">
               <span className="rounded-full bo400/30 bg-emerald-500/10 px-5 py-2 text-sm font-bold text-emerald-200">
-                {getStatusLabel(service)}
+                {getStatusLabel(activeService)}
               </span>
             </div>
 

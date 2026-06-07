@@ -30,3 +30,6 @@ dist-ssr
 .env.*.local
 
 .vercel
+
+# local assets — contains lead data, spreadsheets, sensitive files
+assets/
